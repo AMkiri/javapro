@@ -1,106 +1,77 @@
 package skillbox.amkiri.module5.hw4;
 
-import javax.swing.text.MaskFormatter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.util.Map;
-import java.util.TreeMap;
+
 
 public class Main {
+
     public static void main(String[] args) throws IOException, ParseException {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        CommandLine commandLine = new CommandLine();
+        PhoneBook phoneBook = new PhoneBook();
 
-        System.out.println("Tape 'exit' to close the program.");
-        System.out.println("Commands:\n" +
-                "LIST,\n" +
-                "<phone number>\n" +
-                "<name>\n");
-
-        MaskFormatter maskFormatter = new MaskFormatter("+# ### ###-##-##");
-        maskFormatter.setValueContainsLiteralCharacters(false);
-
-        Map<String, String> phoneBook = new TreeMap<>();
+        commandLine.printListOfCommands();
 
         while (true) {
-            System.out.print(">>> ");
-            String commandLine = reader.readLine().trim();
+            Command command = commandLine.getCommand(reader);
 
-            switch (commandLine.toLowerCase()) {
-                case "exit":
+            switch (command.getType()) {
+                case EXIT:
+
                     return;
 
-                case "list":
-                    if (phoneBook.isEmpty()) {
-                        System.out.println("\nNo data.\n");
-                        break;
-                    }
+                case LIST:
 
-                    System.out.println("\n\t---");
-                    for (Map.Entry en : phoneBook.entrySet()) {
-                        System.out.println(en.getKey() + "\t--->\t" + en.getValue());
-                    }
-                    System.out.println("\t---\n");
+                    System.out.println(phoneBook);
 
                     break;
 
-                default:
+                case PHONE:
 
-                    if (isPhoneNumber(commandLine)) {
+                    PhoneBook.Entry byPhoneNumEntry = phoneBook.findByPhoneNum(
+                            PhoneNumUtils.format(command.getText())
+                    );
 
-                        String phoneNum = maskFormatter
-                                .valueToString(
-                                        commandLine.replaceAll("[ +-]", "")
-                                );
+                    if (byPhoneNumEntry.getName() != null) {
 
-                        if (phoneBook.containsValue(phoneNum)) {
-                            phoneBook.entrySet().stream()
-                                    .filter(entry -> entry.getValue().equals(phoneNum))
-                                    .findFirst()
-                                    .ifPresent(
-                                            en -> System.out.println(en.getKey() + "\t--->\t" + en.getValue())
-                                    );
+                        System.out.println(byPhoneNumEntry);
 
-                        } else {
-                            System.out.print("Enter contact's name: ");
-                            String name = reader.readLine();
-                            phoneBook.put(name, phoneNum);
-                            System.out.println("New contact created.");
-                        }
+                    } else {
 
-                    } else { //it's name
-
-                        if (phoneBook.containsKey(commandLine)) {
-                            String phoneNum = phoneBook.get(commandLine);
-                            System.out.println(commandLine + "\t--->\t" + phoneNum);
-                        } else {
-
-                            String phoneStr;
-
-                            do {
-                                System.out.print("Enter contact's phone number: ");
-                                phoneStr = reader.readLine();
-                            } while (!isPhoneNumber(phoneStr));
-
-                            String phoneNum = maskFormatter
-                                    .valueToString(
-                                            phoneStr.replaceAll("[ +-]", "")
-                                    );
-                            phoneBook.put(commandLine, phoneNum);
-                            System.out.println("New contact created.");
-                        }
+                        byPhoneNumEntry.setName(commandLine.getName(reader));
+                        String result = phoneBook.addContact(byPhoneNumEntry);
+                        System.out.println(result);
 
                     }
+
+                    break;
+
+                case NAME:
+
+                    PhoneBook.Entry byNameEntry = phoneBook.findByName(
+                            command.getText()
+                    );
+
+                    if (byNameEntry.getPhoneNum() != null) {
+
+                        System.out.println(byNameEntry);
+
+                    } else {
+
+                        byNameEntry.setPhoneNum(commandLine.getPhoneNum(reader));
+                        String result = phoneBook.addContact(byNameEntry);
+                        System.out.println(result);
+
+                    }
+
+                    break;
             }
 
         }
     }
 
-    // just russian
-    private static boolean isPhoneNumber(String str) {
-        return str
-                .replaceAll("[ -()]", "")
-                .matches("^((\\+7|7|8)+([0-9]){10})$");
-    }
 }
