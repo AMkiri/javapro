@@ -42,7 +42,7 @@ public class Main {
     }
 
     private static List<String> genAutoNumbers() {
-        List<String> list = new ArrayList<>(60000000);
+        List<String> list = new ArrayList<>(5000000);
 
         for (char ch = 'A'; ch <= 'Z'; ch++) {
 
