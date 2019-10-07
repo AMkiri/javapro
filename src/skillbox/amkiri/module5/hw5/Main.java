@@ -19,25 +19,25 @@ public class Main {
         String stringToFind = list.get(list.size() - 1);
         System.out.println("Element to find: " + stringToFind);
 
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         boolean fromArray = list.contains(stringToFind);
-        long end = System.currentTimeMillis();
-        System.out.println("By direct search: " + (end - start) + " ms. "+ fromArray);
+        long end = System.nanoTime();
+        System.out.println("By direct search: " + (end - start) + " ns. "+ fromArray);
 
-        start = System.currentTimeMillis();
-        int byBinarySearch = Collections.binarySearch(list, stringToFind);
-        end = System.currentTimeMillis();
-        System.out.println("By binary search: " + (end - start) + " ms. "+ byBinarySearch);
+        start = System.nanoTime();
+        boolean byBinarySearch = Collections.binarySearch(list, stringToFind) >= 0;
+        end = System.nanoTime();
+        System.out.println("By binary search: " + (end - start) + " ns. "+ byBinarySearch);
 
-        start = System.currentTimeMillis();
+        start = System.nanoTime();
         boolean fromTreeSet = treeSet.contains(stringToFind);
-        end = System.currentTimeMillis();
-        System.out.println("By tree search: " + (end - start) + " ms. "+ fromTreeSet);
+        end = System.nanoTime();
+        System.out.println("By tree search: " + (end - start) + " ns. "+ fromTreeSet);
 
-        start = System.currentTimeMillis();
+        start = System.nanoTime();
         boolean fromHashSet = hashSet.contains(stringToFind);
-        end = System.currentTimeMillis();
-        System.out.println("By hash search: " + (end - start) + " ms. "+ fromHashSet);
+        end = System.nanoTime();
+        System.out.println("By hash search: " + (end - start) + " ns. "+ fromHashSet);
 
     }
 
