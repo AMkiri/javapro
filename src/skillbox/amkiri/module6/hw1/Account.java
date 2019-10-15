@@ -2,11 +2,11 @@ package skillbox.amkiri.module6.hw1;
 
 import java.math.BigDecimal;
 
-abstract class Account {
+public abstract class Account {
 
     protected BigDecimal availableAmount;
 
-    Account(BigDecimal startAmount) {
+    public Account(BigDecimal startAmount) {
         this.availableAmount = startAmount;
     }
 
