@@ -8,10 +8,7 @@ import skillbox.amkiri.module7.hw2.airport.Terminal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.OptionalInt;
+import java.util.*;
 
 import static skillbox.amkiri.module7.hw1.Loader.loadStaffFromFile;
 
@@ -37,21 +34,19 @@ public class Main {
         /// Используя библиотеку airport.jar, распечатать время вылета и модели самолётов, вылетающие в ближайшие 2 часа.
 
         Airport airport = Airport.getInstance();
-        List<Flight> flights = new ArrayList<>();
-        for (Terminal t:
-                airport.getTerminals()) {
-            flights.addAll(t.getFlights());
-        }
 
         LocalDateTime nowDate = LocalDateTime.now();
         LocalDateTime twoHoursLater = nowDate.plusHours(2);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
 
-
         System.out.println();
         System.out.println("Local time: " + nowDate.getHour() + ":" + nowDate.getMinute());
 
-        flights.stream()
+        airport.getTerminals().stream()
+                .map(Terminal::getFlights)
+                .flatMap(Collection::stream)
+
+                // Stream<Flight>
                 .filter(flight -> {
                     LocalDateTime dt = toLocalDateTime(flight.getDate());
                     return flight.getType().equals(Flight.Type.DEPARTURE)
