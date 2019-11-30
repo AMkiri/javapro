@@ -16,7 +16,6 @@ public abstract class Employee {
     }
 
     public abstract int getMonthSalary();
-    public abstract String printMonthSalary();
 
     public int gainMoney() {
         return 0;
@@ -26,5 +25,9 @@ public abstract class Employee {
 
     public String getName() {
         return this.ID;
+    }
+
+    public int getBonusValue() {
+        return bonusValue;
     }
 }

@@ -13,9 +13,4 @@ public class Operator extends Employee {
         return salary;
     }
 
-    @Override
-    public String printMonthSalary() {
-        return String.format("%-10s: %10d", getName(), getMonthSalary());
-    }
-
 }

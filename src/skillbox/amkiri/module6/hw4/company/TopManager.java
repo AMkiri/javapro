@@ -14,11 +14,6 @@ public class TopManager extends Employee {
     }
 
     @Override
-    public String printMonthSalary() {
-        return String.format("%-10s: %10d (salary: %d, bonus: %d)", getName(), getMonthSalary(), salary, bonusValue);
-    }
-
-    @Override
     public void countBonus() {
         bonusValue = company.isCompanyGoalAchieved() ? (int)Math.round(salary * 1.5) : 0;
     }

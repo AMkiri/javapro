@@ -17,11 +17,6 @@ public class Manager extends Employee {
     }
 
     @Override
-    public String printMonthSalary() {
-        return String.format("%-10s: %10d (salary: %d, bonus: %d)", getName(), getMonthSalary(), salary, bonusValue);
-    }
-
-    @Override
     public int gainMoney() {
         monthProceeds = (int)Math.round(Math.random() * 400000);
         return monthProceeds;

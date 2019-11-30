@@ -14,8 +14,8 @@ public class Company {
     private TreeSet<Employee> rangedEmployees = new TreeSet<>(Comparator.comparingInt(Employee::getMonthSalary).reversed().thenComparing(Employee::getName));
     private int monthIncome = 0;
 
-    public Company(int company_goal) {
-        COMPANY_GOAL = company_goal;
+    public Company(int companyGoal) {
+        COMPANY_GOAL = companyGoal;
     }
 
     public void hire(Employee employee) {
@@ -69,7 +69,9 @@ public class Company {
     }
 
     private ArrayList<Employee> getStaffBySalary(Iterator<Employee> iterator, int count) {
-        if (count > rangedEmployees.size()) return new ArrayList<>(rangedEmployees);
+        if (count > rangedEmployees.size()) {
+            return new ArrayList<>(rangedEmployees);
+        }
 
         ArrayList<Employee> result = new ArrayList<>(5);
         for (int i = 0; i < count && iterator.hasNext(); i++) {
