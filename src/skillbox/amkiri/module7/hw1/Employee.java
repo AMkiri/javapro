@@ -1,15 +1,15 @@
 package skillbox.amkiri.module7.hw1;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Employee
 {
     private String name;
     private Integer salary;
-    private Date workStart;
+    private LocalDate workStart;
 
-    public Employee(String name, Integer salary, Date workStart)
+    public Employee(String name, Integer salary, LocalDate workStart)
     {
         this.name = name;
         this.salary = salary;
@@ -32,11 +32,11 @@ public class Employee
         this.salary = salary;
     }
 
-    public Date getWorkStart() {
+    public LocalDate getWorkStart() {
         return workStart;
     }
 
-    public void setWorkStart(Date workStart) {
+    public void setWorkStart(LocalDate workStart) {
         this.workStart = workStart;
     }
 
@@ -45,7 +45,7 @@ public class Employee
         return String.format( "%-30s | %10d | %s",
                 name,
                 salary,
-                (new SimpleDateFormat("dd.MM.yyyy")).format(workStart)
+                (DateTimeFormatter.ofPattern("dd.MM.yyyy")).format(workStart)
         );
     }
 }
