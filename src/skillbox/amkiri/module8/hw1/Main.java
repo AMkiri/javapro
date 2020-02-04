@@ -25,15 +25,15 @@ public class Main
 
                 switch (command.getAction()) {
                     case "add":
-                        executor.addCustomer(command.getData());
+                        executor.add(command.getData());
                         break;
 
                     case "list":
-                        executor.listCustomers();
+                        executor.list();
                         break;
 
                     case "remove":
-                        executor.removeCustomer(command.getData().getName());
+                        executor.remove(command.getData().getName());
                         break;
 
                     case "count":
@@ -51,7 +51,7 @@ public class Main
                         System.out.println(commandError);
 
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
 
                 String msg = e.getMessage();
                 if (msg != null && !msg.isEmpty()) {

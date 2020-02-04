@@ -11,14 +11,20 @@ public class Command {
     private String action;
     private Customer data = null;
 
+
+    private static final Command NO_COMMAND = new Command("no_action", null);
+
+    /**
+     * @return null when command is wrong
+     */
     public static Command parse(String command) {
         if (command == null) {
-            throw new IllegalArgumentException();
+            return NO_COMMAND;
         }
 
         command = command.trim();
         if (command.isEmpty()) {
-            throw new IllegalArgumentException();
+            return NO_COMMAND;
         }
 
         int pos = command.indexOf(COMMAND_END_CHAR);
@@ -33,8 +39,9 @@ public class Command {
 
             case "add":
             case "remove":
-                if (pos == -1) {
-                    throw new IllegalArgumentException();
+                if (pos <= -1) {
+                    System.out.println("Invalid position in array");
+                    return NO_COMMAND;
                 }
 
                 data = parseData(command.substring(pos + 1).trim());
@@ -46,7 +53,7 @@ public class Command {
                 break;
 
             default:
-                throw new IllegalArgumentException();
+                return NO_COMMAND;
         }
 
         return new Command(action, data);
@@ -64,17 +71,27 @@ public class Command {
             String name = components[0] + " " + components[1];
             return new Customer(name, "", "");
 
-        } else if ( components.length != 4
-                    || !isEmailCorrect(components[2])
-                    || !isPhoneNumberCorrect(components[3])
-        ) {
+        } else {
+            if (components.length != 4) {
+                System.out.println("Invalid data format.\n");
+                return null;
+            }
 
-            throw new IllegalArgumentException("Incorrect data format.");
+            String errMsg = "";
+            if (!isEmailCorrect(components[2])) {
+                errMsg += "Incorrect e-mail.\n";
+            }
+            if (!isPhoneNumberCorrect(components[3])) {
+                errMsg += "Incorrect phone number.\n";
+            }
+            if(!errMsg.isEmpty()) {
+                System.out.println(errMsg);
+                return null;
+            }
 
+            String name = components[0] + " " + components[1];
+            return new Customer(name, components[3], components[2]);
         }
-
-        String name = components[0] + " " + components[1];
-        return new Customer(name, components[3], components[2]);
     }
 
     private Command(String action, Customer data) {

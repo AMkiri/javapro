@@ -6,28 +6,26 @@ import java.util.HashMap;
  * Manage customers.
  * Key field: "Name Surname"
  */
-public class CustomerStorage
-{
+public class CustomerStorage {
     private HashMap<String, Customer> storage;
 
-    public CustomerStorage()
-    {
+    public CustomerStorage() {
         storage = new HashMap<>();
     }
 
-    /**
-     * Add new customer. Update data if exist.
-     */
-    public void addCustomer(Customer customer)
-    {
+    public boolean isExist(String customerName) {
+        return storage.containsKey(customerName);
+    }
+
+
+    public void add(Customer customer) {
         storage.put(customer.getName(), customer);
     }
 
     /**
      * Print all customers to standard output
      */
-    public void listCustomers()
-    {
+    public void list() {
         System.out.println();
 
         if (storage.isEmpty()) {
@@ -42,12 +40,11 @@ public class CustomerStorage
     /**
      * Totally removes customer
      * @param name format: "Name Surname"
-     * @throws IllegalArgumentException if there wasn't such entry
+     * @throws {@link CustomerNotFoundException} if there wasn't such entry
      */
-    public void removeCustomer(String name)
-    {
-        if (!storage.containsKey(name)) {
-            throw new IllegalArgumentException("No entry to delete. Name: " + name);
+    public void remove(String name) {
+        if (!isExist(name)) {
+            throw new CustomerNotFoundException(name);
         } else {
             storage.remove(name);
         }
@@ -56,8 +53,7 @@ public class CustomerStorage
     /**
      * @return number of entries
      */
-    public int getCount()
-    {
+    public int getCount() {
         return storage.size();
     }
 }
